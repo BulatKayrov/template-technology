@@ -1,0 +1,23 @@
+services:
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: unless-stopped
+    ports:
+      - "${MINIO_API_PORT}:9000"  # API порт
+      - "${MINIO_CONSOLE_PORT}:9001"  # WebUI порт
+    volumes:
+      - ./volumes/s3-storage:/data
+      - ./volumes/s3-config:/root/.minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_BROWSER_REDIRECT_URL=http://${MINIO_DOMAIN}:${MINIO_CONSOLE_PORT}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3

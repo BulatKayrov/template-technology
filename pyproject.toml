@@ -1,0 +1,11 @@
+[project]
+name = "example-app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiobotocore>=2.22.0",
+    "boto3>=1.37.3",
+    "fastapi[all]>=0.115.12",
+]
