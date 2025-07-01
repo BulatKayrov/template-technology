@@ -5,7 +5,7 @@ from fastapi.responses import StreamingResponse
 
 from applications.aws.services import async_aws_service
 
-router = APIRouter(tags=["AWS Async"])
+router = APIRouter(tags=["S3 Async"])
 
 
 @router.post("/upload/{bucket_name}")

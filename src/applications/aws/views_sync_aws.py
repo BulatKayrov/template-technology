@@ -3,7 +3,7 @@ from fastapi.responses import StreamingResponse
 
 from applications.aws.services import sync_aws_service
 
-router = APIRouter(tags=["AWS Sync"])
+router = APIRouter(tags=["S3 Sync"])
 
 
 @router.post("/create/bucket")

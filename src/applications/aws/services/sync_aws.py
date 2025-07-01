@@ -3,7 +3,7 @@ from pprint import pprint
 import boto3
 from fastapi import UploadFile
 
-from conf import settings
+from core.conf import settings
 
 
 class S3Service:

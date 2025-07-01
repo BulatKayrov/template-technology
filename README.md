@@ -30,13 +30,14 @@
 ```
 
 ### Синхронный вариант
+
 ```python
 from pprint import pprint
 
 import boto3
 from fastapi import UploadFile
 
-from conf import settings
+from core.conf import settings
 
 
 class S3Service:
@@ -107,7 +108,7 @@ from contextlib import asynccontextmanager
 from aiobotocore.session import get_session
 from fastapi import UploadFile
 
-from conf import settings
+from core.conf import settings
 
 
 class S3Service:
