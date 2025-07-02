@@ -18,13 +18,16 @@ class Settings(BaseSettings):
     MINIO_CONSOLE_PORT: int
     MINIO_API_PORT: int
 
+    secret_key: str = "super-secret-key"
+    algorithm: str = "HS256"
+
     @property
     def s3_endpoint(self):
         return f"http://{self.MINIO_DOMAIN}:{self.MINIO_API_PORT}/"
 
     @property
     def sqlite_url(self):
-        return f"aiosqlite + sqlite:///{BASE_DIR}/database.db"
+        return f"sqlite+aiosqlite:///{BASE_DIR}/database.db"
 
     @property
     def psql_url(self):
