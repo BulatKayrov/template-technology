@@ -14,7 +14,6 @@ from typing import Annotated, TYPE_CHECKING
 from core.database.models import User
 
 if TYPE_CHECKING:
-
     from sqlalchemy.ext.asyncio import AsyncSession
 
 

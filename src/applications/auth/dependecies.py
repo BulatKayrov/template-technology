@@ -4,36 +4,36 @@
 
 import jwt
 from fastapi import Depends, Form, HTTPException
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+    OAuth2PasswordBearer,
+)
+from pydantic import EmailStr
 
 from applications.auth.schemas import UserLogin
 from applications.auth.user_service import user_auth_service
 from applications.auth.utils import decode_jwt, verify_password
 from core.database import get_session
 
-_http_bearer = HTTPBearer()
+_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/sign-in")
 
 
 async def validate_auth_user(
-    form_data: UserLogin = Form(), session=Depends(get_session)
+    username: EmailStr = Form(), password: str = Form(), session=Depends(get_session)
 ):
     """Валидация пользователя по логину и паролю"""
-    user = await user_auth_service.get_user(email=form_data.email, session=session)
+    user = await user_auth_service.get_user(email=username, session=session)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    if not verify_password(
-        plain_password=form_data.password, hashed_password=user.password
-    ):
+    if not verify_password(plain_password=password, hashed_password=user.password):
         raise HTTPException(status_code=401, detail="Incorrect password or email")
     return user
 
 
-def get_payload(
-    credentials: HTTPAuthorizationCredentials = Depends(_http_bearer),
-):
+def get_payload(token: str = Depends(_oauth2_scheme)):
     """Получить полезную нагрузку из токена"""
-    token = credentials.credentials
     try:
         payload = decode_jwt(token=token)
     except jwt.ExpiredSignatureError:
